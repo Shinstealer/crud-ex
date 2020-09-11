@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
-  UserDetailsServiceImpl userDetailsServiceImpl;
+  UserDetailsServiceImpl userDetailsService;
 
   @Autowired
   private AuthEntryPointJwt unauthorizedHandler;
@@ -34,8 +34,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
+  public void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
+      throws Exception {
+    authenticationManagerBuilder.userDetailsService(userDetailsService)
+        .passwordEncoder(passwordEncoder());
   }
 
   @Bean
@@ -51,13 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable()
-    .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-    .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-    .anyRequest().authenticated();
+    http.cors().and().csrf().disable().exceptionHandling()
+        .authenticationEntryPoint(unauthorizedHandler).and().sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+        .antMatchers("/api/auth/**").permitAll().antMatchers("/api/test/**").permitAll()
+        .anyRequest().authenticated();
 
-    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
+    http.addFilterBefore(authenticationJwtTokenFilter(),
+        UsernamePasswordAuthenticationFilter.class);
   }
 }
