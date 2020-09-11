@@ -4,3 +4,9 @@ spring:
       database: test_db
       port: 27017
 
+---
+shinstealer:
+  app:
+    jwtSecret : shinstealerSecretkey
+    jwtExpirationMs: 86400000
+
