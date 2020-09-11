@@ -12,5 +12,12 @@ public class Role {
   @Id
   private String id;
 
-  private ERole role_kind;
+  private ERole name;
+
+  public Role() {
+  }
+
+  public Role(ERole name) {
+    this.name = name;
+  }
 }
