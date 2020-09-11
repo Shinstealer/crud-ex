@@ -2,6 +2,7 @@ spring:
   data:
     mongodb:
       database: test_db
+      host: localhost
       port: 27017
 
 ---
