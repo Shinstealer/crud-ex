@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import com.spring.data.mongodb.crudex.entity.Tutorial;
+import com.spring.data.mongodb.crudex.exception.ResourceNotFoundException;
 import com.spring.data.mongodb.crudex.repository.TutorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,14 +51,11 @@ public class TutorialRestController {
   @GetMapping("/tutorials/{id}")
   public ResponseEntity<Tutorial> getTutorialById(@PathVariable("id") String id) {
 
-    Optional<Tutorial> data = repository.findById(id);
-    if (data.isPresent()) {
-      return new ResponseEntity<>(data.get(), HttpStatus.OK);
-
-    } else {
-
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+    Tutorial data = repository.findById(id).orElseThrow(
+      ()-> new ResourceNotFoundException("Not found Tutorial with id = " + id)
+    );
+    
+      return new ResponseEntity<>(data, HttpStatus.OK);
 
   }
 
@@ -94,7 +92,7 @@ public class TutorialRestController {
 
   @DeleteMapping("/tutorials/{id}")
   public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") String id) {
-    
+
     try {
       repository.deleteById(id);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
