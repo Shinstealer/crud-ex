@@ -1,8 +1,8 @@
-# To get knowledged of spring security and mongoDB 
-## Used 
-### REST api, 
-### Spring boot, 
-### Spring security, 
-### JWT token, 
-### MongoDB
+## Spring boot security and mongoDB rest api
+### Used 
+#### REST api, 
+#### Spring boot, 
+#### Spring security, 
+#### JWT token, 
+#### MongoDB
 
